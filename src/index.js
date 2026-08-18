@@ -5,11 +5,31 @@ const { assign, entries } = Object;
 const EMPTY_FN = () => {};
 
 const PROPS_EXTRACTORS = {
-  callback: { check: (props) => isFunction(props), value: (props) => props, def: EMPTY_FN },
-  submenu: { check: (props, index) => isSubmenu(props, index), value: (props) => props, def: false },
-  radio: { check: (props) => isRadio(props), value: (props) => ({ type: "radio", checked: !!props[0] }), def: {} },
-  checkbox: { check: (props) => isBoolean(props), value: (props) => ({ type: "checkbox", checked: props }), def: {} },
-  other: { check: (props, index) => isOtherProps(props, index), value: (props, index) => props[0] || props, def: {} },
+  callback: {
+    check: (props) => isFunction(props),
+    value: (props) => props,
+    def: EMPTY_FN,
+  },
+  other: {
+    check: (props, index) => isOtherProps(props, index),
+    value: (props, index) => props[0] || props,
+    def: {},
+  },
+  submenu: {
+    check: (props, index) => isSubmenu(props, index),
+    value: (props) => props,
+    def: false,
+  },
+  radio: {
+    check: (props) => isRadio(props),
+    value: (props) => ({ type: "radio", checked: !!props[0] }),
+    def: {},
+  },
+  checkbox: {
+    check: (props) => isBoolean(props),
+    value: (props) => ({ type: "checkbox", checked: props }),
+    def: {},
+  },
 };
 
 let LISTENER = EMPTY_FN;
@@ -36,8 +56,7 @@ function createMenu(menu, parentId) {
       parentId ? { parentId } : {},
     );
     if (options === null) {
-      properties.type = "separator";
-      browser.contextMenus.create(properties);
+      browser.contextMenus.create({ ...properties, type: "separator" });
       continue;
     }
 
@@ -61,7 +80,7 @@ function extractOptionProps(props) {
 
   entries(PROPS_EXTRACTORS).forEach(([type, { check, value, def }]) => properties[type] = check(props) ? value(props) : def);
 
-  if (!isRadio(props) && isArray(props)) {
+  if (!isRadio(props) && !isOtherProps(props) && isArray(props)) {
     entries(PROPS_EXTRACTORS).forEach(
       ([type, { check, value }]) => {
         for (let index in props) {

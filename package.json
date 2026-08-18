@@ -1,6 +1,6 @@
 {
   "name": "webextension-contextmenu",
-  "version": "0.0.2",
+  "version": "0.0.31",
   "description": "Generate the webextension's context menu with minimal typing",
   "license": "MIT",
   "author": "Igor Morozov <ismorozs@gmail.com>",
