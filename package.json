@@ -1,0 +1,30 @@
+{
+  "name": "webextension-contextmenu",
+  "version": "0.0.2",
+  "description": "Generate the webextension's context menu with minimal typing",
+  "license": "MIT",
+  "author": "Igor Morozov <ismorozs@gmail.com>",
+  "main": "./dist/webextension-contextmenu.js",
+  "exports": {
+    ".": "./dist/webextension-contextmenu.js",
+    "./min": "./dist/webextension-contextmenu.min.js"
+  },
+  "scripts": {
+    "start": "webpack",
+    "build": "webpack --env production"
+  },
+  "devDependencies": {
+    "minimizer-webpack-plugin": "5.6.1",
+    "webextension-polyfill": "0.12.0",
+    "webpack": "5.108.4",
+    "webpack-cli": "7.2.1"
+  },
+  "homepage": "https://github.com/ismorozs/webextension-contextmenu",
+  "repository": "https://github.com/ismorozs/webextension-contextmenu.git",
+  "bugs": "https://github.com/ismorozs/webextension-contextmenu/issues",
+  "keywords": [
+    "webextension",
+    "extension",
+    "development"
+  ]
+}
