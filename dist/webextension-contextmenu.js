@@ -161,19 +161,22 @@ let LISTENER = EMPTY_FN;
   await browser.contextMenus.removeAll();
   browser.contextMenus.onClicked.removeListener(LISTENER);
 
-  const callbacks = createMenu(menu);
+  const { ids, callbacks } = createMenu(menu);
 
   LISTENER = (info, tab) => callbacks[info.menuItemId](info, tab);
-
   browser.contextMenus.onClicked.addListener(LISTENER);
+
+  return ids;
 }
 
 function createMenu(menu, parentId) {
   const callbacks = {};
+  const ids = {};
 
   let idCount = 0;
   for (let [title, options] of entries(menu)) {
-    const id = `${parentId || ""}-${idCount++}`;
+    const id = `${parentId || "id"}-${idCount++}`;
+    ids[title] =  { id };
     const properties = assign(
       { id, contexts: ["all"] },
       parentId ? { parentId } : {},
@@ -191,11 +194,13 @@ function createMenu(menu, parentId) {
     browser.contextMenus.create({ title, ...properties });
 
     if (submenu) {
-      assign(callbacks, createMenu(submenu, id));
+      const sumMenu = createMenu(submenu, id);
+      assign(callbacks, sumMenu.callbacks);
+      assign(ids[title], sumMenu.ids);
     }
   }
 
-  return callbacks;
+  return { ids, callbacks };
 }
 
 function extractOptionProps(props) {

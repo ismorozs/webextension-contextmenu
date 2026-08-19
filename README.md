@@ -1,5 +1,5 @@
 # Webextension Context Menu
-Generate the webextension's context menu with minimal typing.
+Generate the webextension's right-click context menu with minimal typing.
 
 ## How to install and prepare
 Install the library through
@@ -24,14 +24,14 @@ createContextMenu(Menu {
     optionTitle4: optionProps4,
     ...
   }
-}) => void
+}) => MenuIds {}
 ```
 Where:  
 ```optionTitle``` - title of the option.  
 ```optionProps``` - description of the corresponding option. Depending on the type of the value, the resulting option appearance and behavior may differ.  
 |```optionProps``` value| What represents |
 |---|---|
-|```onClickHandler (Item, Tab) => void``` | function to run when clicking on the option, where: ```Item``` - the clicked option, ```Tab``` - the tab where it happened |
+|```onClickHandler (Option, Tab) => void``` | function to run when clicking on the option, where: ```Option``` - the clicked option, ```Tab``` - the tab where it happened |
 |```true```|checkbox checked|
 |```false```|checkbox unchecked|
 |```[true]```| radio checked |
@@ -41,12 +41,12 @@ Where:
 |```[{ ...createProperties }]``` (single object inside an array)| any other ```createProperties``` that may be passed onto [```menus.create``` method](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/menus/create#createproperties)  |
 
 Multiple values can be combined inside one ```optionProps``` with the use of an array, e.g. ```[() => {}, true]``` will create a checked option with a click handler.  
-
 ```Menu```s can be nested in other ```Menu```s as much as you would like, or the browser will allow.  
   
-  
+```MenuIds``` - returning value containing the ids of all created options. With the same object structure as the initial ```Menu``` argument, but with ids instead of ```optionProps```.  
 
-**Important: ```createContextMenu``` works asynchronously, so you should ```await``` or use ```Promise.then```, if you want to continue working on it somehow right away**
+
+**Important: ```createContextMenu``` works asynchronously, so you should ```await``` or use ```Promise.then```, if you want to continue working with its returned value**
 
 ### Updating
 To update the context menu, run ```createContextMenu``` again with a new ```Menu``` argument.
@@ -56,7 +56,7 @@ To update the context menu, run ```createContextMenu``` again with a new ```Menu
 ```js
 createContextMenu({
   "My Greatest Extension": {
-    "Option 1": () => console.log("Do something"),
+    "Option 1": (option, tab) => console.log("Do something", option, tab),
     "Option 2": {
       Radio1: [
         [], () => console.log("radio clicked"),

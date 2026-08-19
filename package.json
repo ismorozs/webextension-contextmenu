@@ -1,7 +1,7 @@
 {
   "name": "webextension-contextmenu",
-  "version": "0.0.31",
-  "description": "Generate the webextension's context menu with minimal typing",
+  "version": "0.0.33",
+  "description": "Generate the webextension's right-click context menu with minimal typing",
   "license": "MIT",
   "author": "Igor Morozov <ismorozs@gmail.com>",
   "main": "./dist/webextension-contextmenu.js",
@@ -25,6 +25,11 @@
   "keywords": [
     "webextension",
     "extension",
+    "contextmenu",
+    "context",
+    "menu",
+    "right",
+    "click",
     "development"
   ]
 }
